@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagination</title>
+</head>
+
+<body>
+    <section>
+        <div style="text-align: center;">
+            <h1>Pagination</h1>
+        </div>
+        <div id="displayPost"></div>
+        <div id="buttons" style="text-align: center; margin-top: 20px;"></div>
+    </section>
+    <script>
+        const displayPost = document.getElementById("displayPost");
+        const buttons = document.getElementById("buttons");
+
+        let postPerPage = 10;
+        let currentPage = 1;
+
+        // Fetch and Display Posts
+        async function fetchPost() {
+            let response = await fetch("https://jsonplaceholder.typicode.com/posts");
+            let data = await response.json();
+
+            let totalPage = Math.ceil(data.length / postPerPage);
+            renderPosts(data);
+            renderButtons(totalPage, data);
+        }
+
+        // Render Posts for the Current Page
+        function renderPosts(data) {
+            displayPost.innerHTML = ""; // Clear previous posts
+
+            let lastIndexOfPage = currentPage * postPerPage;
+            let firstIndexOfPage = lastIndexOfPage - postPerPage;
+            let currentPost = data.slice(firstIndexOfPage, lastIndexOfPage);
+
+            currentPost.forEach((element) => {
+                let div = document.createElement("div");
+                div.style.display = "flex";
+                div.style.gap = "10px";
+                div.style.marginBottom = "10px";
+
+                let id = document.createElement("p");
+                id.innerHTML = `<strong>${element.id}</strong>`;
+
+                let title = document.createElement("p");
+                title.innerHTML = element.title;
+
+                div.append(id, title);
+                displayPost.append(div);
+            });
+        }
+
+        // Render Pagination Buttons
+        function renderButtons(totalPage, data) {
+            buttons.innerHTML = ""; // Clear previous buttons
+
+            for (let i = 1; i <= totalPage; i++) {
+                let button = document.createElement("button");
+                button.innerText = i;
+                button.style.margin = "0 5px";
+                button.style.padding = "5px 10px";
+                button.style.cursor = "pointer";
+                button.style.border = "1px solid #ddd";
+                button.style.borderRadius = "5px";
+                button.style.backgroundColor = currentPage === i ? "blue" : "lightgray";
+                button.style.color = currentPage === i ? "white" : "black";
+
+                button.addEventListener("click", () => {
+                    currentPage = i;
+                    renderPosts(data); // Re-render posts for the selected page
+                    renderButtons(totalPage, data); // Re-render buttons to highlight the active page
+                });
+
+                buttons.append(button);
+            }
+        }
+
+        // Initial Fetch
+        fetchPost();
+    </script>
+</body>
+
+</html>
