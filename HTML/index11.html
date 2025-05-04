@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form with Display</title>
+    <style>
+        #displayArea {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <form id="loginForm">
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter username">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter password">
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter email">
+        </div>
+
+        <div class="form-group">
+            <label>Gender:</label>
+            <input type="radio" id="male" name="gender" value="male">
+            <label for="male" style="display: inline; font-weight: normal;">Male</label>
+            <input type="radio" id="female" name="gender" value="female">
+            <label for="female" style="display: inline; font-weight: normal;">Female</label>
+        </div>
+
+        <div class="form-group">
+            <label for="country">Country:</label>
+            <select id="country" name="country">
+                <option value="">Select a country</option>
+                <option value="usa">United States</option>
+                <option value="uk">United Kingdom</option>
+                <option value="canada">Canada</option>
+                <option value="australia">Australia</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="bio">Bio:</label>
+            <textarea id="bio" name="bio" placeholder="Tell us about yourself"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>
+                <input type="checkbox" id="subscribe" name="subscribe" value="yes">
+                Subscribe to newsletter
+            </label>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="displayArea">
+        <h3>Form Entries Will Appear Here:</h3>
+        <div id="entriesDisplay"></div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Get all form values
+            const formData = {
+                username: this.elements.username.value,
+                password: this.elements.password.value,
+                email: this.elements.email.value,
+                gender: document.querySelector('input[name="gender"]:checked')?.value || 'Not specified',
+                country: this.elements.country.value,
+                bio: this.elements.bio.value,
+                subscribe: this.elements.subscribe.checked ? 'Yes' : 'No'
+            };
+            
+            // Display the entries
+            displayEntries(formData);
+            
+            // You could also send this data to a server here
+            // fetch('/submit-form', { method: 'POST', body: JSON.stringify(formData) })
+        });
+
+        function displayEntries(data) {
+            const displayDiv = document.getElementById('entriesDisplay');
+            let html = '<ul>';
+            
+            for (const [key, value] of Object.entries(data)) {
+                // Don't display password for security
+                if (key === 'password') continue;
+                
+                html += `<li><strong>${key}:</strong> ${value || 'Empty'}</li>`;
+            }
+            
+            html += '</ul>';
+            displayDiv.innerHTML = html;
+        }
+    </script>
+</body>
+</html>
