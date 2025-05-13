@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>clip path property</title>
+</head>
+<style>
+    .img1 {
+        float: left;
+        /* The clip-path property let yo with css it is easy to shap clip images to circles ellipses and polygons */
+        /* the clip-path property lets yoyu clip an element to a basic shape */
+        clip-path: circle(30%);
+        shape-outside: circle(40%);
+    }
+
+
+    div {
+        border: 1px solid green;
+        padding: 10px;
+        ;
+    }
+
+    .img2 {
+        clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+        float: left;
+        shape-outside: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);;
+    }
+</style>
+
+<body>
+    <div>
+        <img class="img1" src="https://www.w3schools.com/css/pineapple.jpg" alt="">
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ad dolore sint iusto magnam, ducimus cumque ipsa
+            dolor nemo doloremque facere nam porro cupiditate laborum doloribus, pariatur suscipit libero. Saepe, velit?
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Optio autem officiis blanditiis ducimus veritatis
+            repudiandae nesciunt consectetur veniam, aperiam fugiat. Sed, facere recusandae iure tempora animi aliquam
+            autem quaerat maxime?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repudiandae harum veritatis
+            placeat, voluptates accusamus, eos impedit asperiores alias earum eveniet corrupti sit natus veniam
+            reiciendis ducimus voluptate quidem perspiciatis maxime?Lorem ipsum dolor sit amet consectetur adipisicing
+            elit. Perspiciatis blanditiis, vitae quisquam hic temporibus doloribus? Quae ipsam illo deserunt sapiente,
+            atque adipisci? Fugit quas magni praesentium id enim nisi harum.
+        </p>
+    </div>
+    <div>
+        <img class="img2" src="https://www.w3schools.com/css/pineapple.jpg" alt="">
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Fuga corrupti necessitatibus ipsam delectus
+            perferendis unde magni eaque ut sunt quos, numquam vitae sint earum dolor explicabo vel incidunt fugiat
+            cum!Lorem Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit fugiat, sunt maxime, nostrum
+            similique quas vitae sed nisi hic consectetur error repellat mollitia. Harum, alias veritatis nisi rem
+            mollitia consequuntur Lorem ipsum dolor sit amet consectetur, adipisicing elit. Cumque delectus recusandae,
+            excepturi alias eveniet nihil soluta! Porro a magni, quisquam laudantium voluptates quas ducimus ipsa nihil
+            suscipit harum, quidem beatae.lorem' Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum harum
+            perferendis ratione soluta exercitationem est quas, iusto nisi, maxime voluptatibus unde, eaque eligendi
+            sit? Repellendus ea dolorum laudantium temporibus sint.</p>
+        <!-- important points -->
+        <!-- clip-path property cirstlet you clip an elemtn to a basic shape -->
+        <!-- the shape-outside property lets you define a shape for he wrapping of the inline content -->
+        <!-- the circle funtion() is also used withtin the shape-outside property. -->
+    </div>
+</body>
+
+</html>
