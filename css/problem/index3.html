@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Toggle Switch</title>
+    <style>
+        /* The switch container */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* Hide the default checkbox */
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider background */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        /* The slider circle (before pseudo-element) */
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        /* When the checkbox is checked */
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        /* Move the circle when checked */
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Optional: Add focus styles */
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        /* Optional: Add disabled state */
+        input:disabled + .slider {
+            background-color: #e0e0e0;
+            cursor: not-allowed;
+        }
+
+        /* Container for demo purposes */
+        .container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <label class="toggle-switch">
+            <input type="checkbox">
+            <span class="slider"></span>
+        </label>
+        <span>Toggle me!</span>
+    </div>
+
+    <div class="container">
+        <label class="toggle-switch">
+            <input type="checkbox" checked>
+            <span class="slider"></span>
+        </label>
+        <span>Pre-checked toggle</span>
+    </div>
+
+    <div class="container">
+        <label class="toggle-switch">
+            <input type="checkbox" disabled>
+            <span class="slider"></span>
+        </label>
+        <span>Disabled toggle</span>
+    </div>
+</body>
+</html>
