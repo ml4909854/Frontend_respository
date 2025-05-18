@@ -1,4 +1,75 @@
+<!-- problem 1: 
+create a form with 
+a username firs
+an ameail fiels 
+A password field
+using onfocus events:
+1. show specfic intrustion for each fied it receives focus
+2. Hide the interstruiton shere fire loses focus
+stule the active fiesd didferntly chagnge border color 
 
 
 
-<!-- problem 1: -->
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>onfocus events</title>
+</head>
+<style>
+    .field-intstruction {
+        display: none;
+        color: red;
+        font-size: 14px;
+    }
+
+    input:focus {
+        border: 2px solid black;
+    }
+</style>
+
+<body>
+    <form>
+        <h1>Registration Form</h1>
+        <div>
+            <label>Username</label><br>
+            <input type="text" id="username" placeholder="username" onblur="hideIntruction('usernameHelp')"
+                onfocus="showInstruction('usernameHelp')">
+            <div id="usernameHelp" class="field-intstruction">
+                Use 5-15 characters (letters and numbers only)
+            </div>
+        </div>
+        <div>
+            <label>email</label><br>
+            <input type="email" id="email" placeholder="email" onblur="hideIntruction('emailHelp')"
+                onfocus="showInstruction('emailHelp')">
+            <div id="emailHelp" class="field-intstruction">
+                Enter a valid email address <!-- Use 5-15 characters (letters and numbers only) -->
+            </div>
+        </div>
+        <div>
+            <label>password</label><br>
+            <input type="text" id="username" placeholder="username" onblur="hideIntruction('passwordHelp')"
+                onfocus="showInstruction('passwordHelp')">
+            <div id="passwordHelp" class="field-intstruction">
+                Minimum 8 characters with at least one number
+            </div>
+        </div>
+    </form>
+
+    <script>
+        function showInstruction(id) {
+            document.getElementById(id).style.display = "block"
+        }
+        function hideIntruction(id) {
+            document.getElementById(id).style.display = "none"
+        }
+    </script>
+</body>
+
+</html>

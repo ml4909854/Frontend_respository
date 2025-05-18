@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .search-container {
+            display: flex;
+            align-items: center;
+            margin: 20px;
+        }
+        #searchBox {
+            width: 150px;
+            padding: 8px;
+            transition: width 0.3s;
+        }
+        #searchBox:focus {
+            width: 250px;
+        }
+        .suggestions {
+            display: none;
+            position: absolute;
+            background: white;
+            border: 1px solid #ddd;
+            width: 250px;
+        }
+        .clear-btn {
+            display: none;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" 
+               id="searchBox"
+               placeholder="Search..."
+               onfocus="expandSearch()"
+               onblur="collapseSearch()"
+               oninput="toggleClearButton()">
+        <span class="clear-btn" onclick="clearSearch()">✕</span>
+    </div>
+    <div id="suggestions" class="suggestions">
+        <!-- Suggestions would be populated here -->
+    </div>
+
+    <script>
+        function expandSearch() {
+            document.getElementById('suggestions').style.display = 'block';
+            toggleClearButton();
+        }
+        
+        function collapseSearch() {
+            document.getElementById('suggestions').style.display = 'none';
+        }
+        
+        function toggleClearButton() {
+            const searchBox = document.getElementById('searchBox');
+            const clearBtn = document.querySelector('.clear-btn');
+            clearBtn.style.display = searchBox.value.length > 0 ? 'block' : 'none';
+        }
+        
+        function clearSearch() {
+            document.getElementById('searchBox').value = '';
+            document.querySelector('.clear-btn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
