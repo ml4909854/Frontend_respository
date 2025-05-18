@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>onblur Events</title>
+</head>
+<style>
+    body{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    form{
+        /* border: 1px solid black; */
+        width: 500px;
+        height: auto;
+        font-size: 18px;
+        /* line-height: 1.5; */
+    }
+    input{
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+
+    }
+    button{
+        padding: 10px 30px;
+        color: white;
+        background-color: green;
+        border: none;
+        cursor: pointer;
+    }
+    button:disabled{
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+    .error{
+        color:  red;
+        font-size: 14px;
+    }
+    
+</style>
+<body>
+    <h1>Registration form</h1>
+    <form class="form">
+        <div>
+            <label>username 5 characters</label><br>
+            <input type="text" placeholder="username" id="username" onblur="validateUsername()"><br>
+            <p id="usernameError" class="error">username more than 5 characters</p>
+        </div>
+        <div>
+            <label>Email</label><br>
+            <input type="email" placeholder="email" id="email" onblur="validateEmail()"> <br>
+            <p id="emailError" class="error">Emial must contain @ symbo</p><br>
+
+        </div>
+        <div>
+            <label>Password</label><br>
+            <input type="password" placeholder="password" id="password" onblur="validatePassword()"><br>
+            <p id="passwordError" class="error">password atleast 8 characters
+            </p><br>
+        </div>
+        <button type="submit" id="submitBtn" disabled>Submit</button>
+    </form>
+
+  <script>
+
+const validateStatus ={
+    username:false,
+    email:false,
+    password:false
+}
+
+
+function validateUsername(){
+    const username = document.getElementById("username").value;
+    const usernameElement = document.getElementById("usernameError")
+
+    if(username.length >= 5){
+        usernameElement.style.display = "none"
+        validateStatus.username = true
+    }else{
+        usernameElement.style.display = "block"
+        validateStatus.username = false
+    }
+    updateSubmitBtn()
+}
+
+function validateEmail(){
+    const email = document.getElementById("email").value
+    const emailElement = document.getElementById("emailError")
+
+  if(email.includes("@")){
+  emailElement.style.display = "none"
+  validateStatus.email = true
+  }else{
+    emailElement.style.display = "block"
+    validateStatus.email = false
+  }updateSubmitBtn()
+}
+
+
+function validatePassword(){
+    const password = document.getElementById("password").value
+    const passwordElement = document.getElementById("passwordError")
+
+    if(password.length>=8){
+        passwordElement.style.display = "none"
+        validateStatus.password = true
+    }else{
+        passwordElement.style.display = "block"
+        validateStatus.password = false
+    }
+    updateSubmitBtn()
+}
+
+function updateSubmitBtn(){
+const submitBtn = document.getElementById("submitBtn")
+
+if(validateStatus.username && validateStatus.email && validateStatus.password){
+    submitBtn.disabled = false
+}else{
+    submitBtn.disabled = true
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const form = document.querySelector("form")
+    form.addEventListener("submit" , (e)=>{
+        e.preventDefault()
+        alert("form is sumitted")
+    })
+</script>
+</body>
+
+
+</html>

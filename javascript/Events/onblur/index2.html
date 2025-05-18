@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phone Number Formatter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            width: 300px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .instructions {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Phone Number Formatter</h2>
+        <p class="instructions">Enter 10 digits (no formatting). It will auto-format on blur.</p>
+        
+        <div>
+            <input type="text" 
+                   id="phone" 
+                   placeholder="1234567890" 
+                   maxlength="14"
+                   onfocus="unformatPhone()" 
+                   onblur="formatPhone()">
+            <div id="phoneError" class="error">Please enter exactly 10 digits</div>
+        </div>
+    </div>
+
+    <script>
+        const phoneInput = document.getElementById('phone');
+        const phoneError = document.getElementById('phoneError');
+
+        function formatPhone() {
+            // Get raw digits only
+            let digits = phoneInput.value.replace(/\D/g, '');
+            
+            // Validate length
+            if (digits.length !== 10) {
+                phoneError.style.display = 'block';
+                return;
+            }
+            
+            phoneError.style.display = 'none';
+            
+            // Apply formatting: (123) 456-7890
+            const formatted = `(${digits.substring(0, 3)}) ${digits.substring(3, 6)}-${digits.substring(6)}`;
+            phoneInput.value = formatted;
+        }
+
+        function unformatPhone() {
+            // Remove all non-digit characters when focused
+            phoneInput.value = phoneInput.value.replace(/\D/g, '');
+            phoneError.style.display = 'none';
+        }
+
+        // Prevent non-digit input
+        phoneInput.addEventListener('input', function(e) {
+            // Allow only digits (but don't format yet)
+            this.value = this.value.replace(/\D/g, '');
+        });
+    </script>
+</body>
+</html>
