@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change the text when the button click</title>
+</head>
+<body>
+    <p id="demo">Hi My name is Mahesh Kumar!</p>
+    <button onclick="handleClick()">Change Text</button>
+    <script>
+        const para = document.getElementById("demo")
+        function handleClick(){
+            para.innerHTML = "Hi I am from ranchi"
+        }
+    </script>
+</body>
+</html>
