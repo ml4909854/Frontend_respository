@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>onload Interactive Example</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #status { font-size: 24px; margin: 20px; }
+        #partyImage { width: 300px; border: 2px dashed #ccc; }
+    </style>
+</head>
+<body>
+    <h1>🎉 Party Time! 🎉</h1>
+    
+    <div id="status">Loading... (Wait for it!)</div>
+    
+    <img id="partyImage" src="https://media.giphy.com/media/LSNqpYqGRqwrS/giphy.gif" 
+         alt="Party GIF" onload="imageLoaded()">
+    
+    <script>
+        // 1. Change status when PAGE fully loads
+        window.onload = function() {
+            document.getElementById("status").innerHTML = "✅ Page Loaded! Ready to Party!";
+        };
+        
+        // 2. Detect when IMAGE loads
+        function imageLoaded() {
+            alert("🎊 Party GIF loaded! Let’s dance!");
+            document.getElementById("partyImage").style.border = "2px solid green";
+        }
+    </script>
+</body>
+</html>
