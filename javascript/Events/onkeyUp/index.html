@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="message" placeholder="Type something...">
+<p>Character count: <span id="counter">0</span></p>
+
+<script>
+  document.getElementById("message").onkeyup = function() {
+    const count = this.value.length;
+    document.getElementById("counter").textContent = count;
+  };
+</script>
+</body>
+</html>
