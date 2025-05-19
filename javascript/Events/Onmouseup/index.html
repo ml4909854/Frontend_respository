@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>OnkeyDown</title>
+    </head>
+    <body>
+        
+    <div 
+  style="width:100px; height:100px; background:red"
+  onmousedown="this.style.background='blue'"
+  onmouseup="this.style.background='green'">
+</div>
+<canvas id="drawArea" width="300" height="200" style="border:1px solid"></canvas>
+<script>
+  let isDrawing = false;
+  const canvas = document.getElementById("drawArea");
+  const ctx = canvas.getContext("2d");
+
+  canvas.onmousedown = () => isDrawing = true;
+  canvas.onmouseup = () => isDrawing = false;
+  
+  canvas.onmousemove = (e) => {
+    if(isDrawing) {
+      ctx.fillRect(e.offsetX, e.offsetY, 5, 5);
+    }
+  };
+</script>
+
+    </body>
+</html>
