@@ -26,21 +26,32 @@ import React from "react";
 
 // const import React from 'react'
 
-const Garage = (props)=>{
-  return <>
-  <h1>I have a {props.car} car</h1>
+// const Garage = (props)=>{
+//   return <>
+//   <h1>I have a {props.car} car</h1>
   
+//   </>
+// }
+
+// const  App= () => {
+//   let carname = "maruti 800"
+//   return <>
+//   <h1>hI aam a car component</h1>
+// <Garage car={carname}/>
+//   </>
+// };
+
+
+/// react Events 
+
+function App(){
+  
+  const shoot = ()=>{
+    alert("Great shot!")
+  }
+  return <>
+  <button onClick={shoot}>Hit A Shot</button>
   </>
 }
-
-const  App= () => {
-  let carname = "maruti 800"
-  return <>
-  <h1>hI aam a car component</h1>
-<Garage car={carname}/>
-  </>
-};
-
-
 
 export default App;
