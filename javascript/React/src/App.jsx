@@ -29,7 +29,7 @@ import React from "react";
 // const Garage = (props)=>{
 //   return <>
 //   <h1>I have a {props.car} car</h1>
-  
+
 //   </>
 // }
 
@@ -41,17 +41,44 @@ import React from "react";
 //   </>
 // };
 
+// /// react Events
 
-/// react Events 
+// function App() {
+//   const shoot = (a) => {
+//     alert(a);
+//   };
+//   return (
+//     <>
+//       <button onClick={() => shoot("Great Shot!")}>Hit A Shot</button>
+//     </>
+//   )
+// }
+// import React from 'react'
 
-function App(){
-  
-  const shoot = ()=>{
-    alert("Great shot!")
-  }
-  return <>
-  <button onClick={shoot}>Hit A Shot</button>
-  </>
+const App = () => {
+
+function Garage(props) {
+  const cars = props.cars;
+  return (
+    <>
+      <h1>Garage</h1>
+      {cars.length > 0 &&
+        <h2>
+          You have {cars.length} cars in your garage.
+        </h2>
+      }
+    </>
+  );
+}
+ 
+const cars = [
+  // "ford" , "mustang" , "Maruti*900"
+]
+  return (
+    <div>
+      <Garage cars={cars}/>
+    </div>
+  )
 }
 
-export default App;
+export default App
