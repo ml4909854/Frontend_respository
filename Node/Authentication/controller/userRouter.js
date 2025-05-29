@@ -36,7 +36,7 @@ router.post("/login", async (req, res) => {
     if (!comparePassword) {
       res.status(404).json({ message: "password is wrong" });
     }
-    const token = jwt.sign({ email, id: user._id }, "masai");
+    const token = jwt.sign({ email, role:user.role}, "masai");
     res.status(201).json({
       message: `${user.name} login successfully!`,
       token,
