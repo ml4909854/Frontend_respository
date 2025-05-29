@@ -1,10 +1,11 @@
 const jwt = require("jsonwebtoken");
+const blackList = require("../blackList");
 
 const isAuthenticated = (req, res, next) => {
   try {
     const token  = req.headers.authorization.split(" ")[1];
-    if (!token) {
-      return res.status(401).json({ message: "Token not found or expired" });
+    if(blackList.has(token)){
+      res.status(404).json({message:"You logged out!. Please login again"})
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "masai");
     req.user = decoded;

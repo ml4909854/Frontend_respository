@@ -36,10 +36,23 @@ router.post("/login", async (req, res) => {
     if (!comparePassword) {
       res.status(404).json({ message: "password is wrong" });
     }
-    const token = jwt.sign({ email, role:user.role}, "masai");
+
+    const accessToken = jwt.sign(
+      { email, name: user.name, role: user.role },
+      "masai",
+      { expiresIn: "30s" }
+    );
+    const refreshToken = jwt.sign(
+      { email, name: user.name, role: user.role },
+      "masaiRefresh",
+      { expiresIn: "7d" }
+    );
+
     res.status(201).json({
       message: `${user.name} login successfully!`,
-      token,
+     
+      accessToken,
+       refreshToken,
       id: user._id,
     });
   } catch (error) {

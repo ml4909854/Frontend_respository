@@ -3,7 +3,9 @@ const app = express();
 const connectDB = require("./config/database.js");
 const userRouter = require("./controller/userRouter.js");
 const isAuthenticated = require("./middleware/auth.js");
-const checkAcess = require("./middleware/checkAcess.js")
+const checkAcess = require("./middleware/checkAcess.js");
+const blackList = require("./blackList.js");
+const jwt = require("jsonwebtoken")
 app.use(express.json());
 
 app.use("/user", userRouter);
@@ -14,18 +16,29 @@ app.get("/privateData", isAuthenticated, (req, res) => {
   res.send("private data");
 });
 
-// app.get("/orders", isAuthenticated, (req, res) => {
-//   res.send("order data");
-// });
-// app.get("/cart", isAuthenticated, (req, res) => {
-//   res.send("cart data");
-// });
-
-app.get("/admin/data", isAuthenticated ,checkAcess("admin"), (req, res) => {
-    res.send("Hey admin!")
+app.get("/logout", (rea, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  if (token) {
+    blackList.add(token);
+  }
+  res.send("logout successfully!");
 });
-app.get("/author/data", isAuthenticated ,checkAcess("author"), (req, res) => {
-    res.send("Hey author!")
+
+app.post("/genrateNewToken", (req, res) => {
+  const refreshToken = req.body.token
+  if(refreshToken){
+        jwt.verify(refreshToken , "masaiRefresh" , (err , decode)=>{
+           if(err){
+            res.send(err)
+           }
+         const acessToken =    jwt.sign({name:decode.name , email:decode.email , role:decode.role} , "masai" ,{expiresIn:"15s"})
+         res.status(200).json({acesstoken:acessToken})
+        })
+  }
+});
+
+app.get("/admin/data", isAuthenticated, checkAcess("admin"), (req, res) => {
+  res.send("Hey admin!");
 });
 
 app.get("/health", (req, res) => {
