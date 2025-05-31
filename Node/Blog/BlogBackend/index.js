@@ -5,8 +5,14 @@ const connectDB = require("./config/database.js");
 const userRouter = require("./controller/userRouter.js");
 const blogRouter = require("./controller/blogRouter.js");
 const jwt = require("jsonwebtoken");
-app.use(express.json());
+const cors = require("cors")
 
+app.use(cors({
+  origin: process.env.FRONTEND_URL,  // Must be correctly set in .env
+  credentials: true,
+  methods: ["GET", "POST", "PATCH", "DELETE"] // Use an array here
+}));
+app.use(express.json());
 app.use("/user", userRouter);
 app.use("/blog", blogRouter);
 
@@ -29,7 +35,7 @@ app.post("/generateToken", (req, res) => {
     const accessToken = jwt.sign(
       { _id: decoded._id },
       process.env.ACCESS_SECRET_KEY,
-      { expiresIn: "30s" }
+      { expiresIn: "30h" }
     );
 
     res.status(200).json({ accessToken });

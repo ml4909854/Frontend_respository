@@ -88,7 +88,7 @@ router.post("/login", async (req, res) => {
     const accessToken = jwt.sign(
       { _id: user._id },
       process.env.ACCESS_SECRET_KEY,
-      { expiresIn: "30h" }
+      { expiresIn: "30s" }
     );
     const refreshToken = jwt.sign(
       { _id: user._id },
@@ -98,7 +98,7 @@ router.post("/login", async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Login successfull!", accessToken, refreshToken });
+      .json({ message: "Login successfull!", accessToken, refreshToken , userId:user._id });
   } catch (error) {
     res.status(500).json({ error: error });
   }
