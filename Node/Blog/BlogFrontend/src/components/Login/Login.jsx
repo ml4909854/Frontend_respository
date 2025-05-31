@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import "./Signup.css";
+import "../Signup/Signup.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../Spinner/Spinner"; // ✅ import reusable spinner
+import Spinner from "../../Spinner/Spinner"; // ✅ import reusable spinner
 
 const Login = () => {
   const [data, setData] = useState({
@@ -42,7 +42,7 @@ const Login = () => {
              localStorage.setItem("userId" , response.data.userId)
              localStorage.setItem("refreshToken" , response.data.refreshToken)
       if (response.status === 200) {
-        alert("User logged in successfully!");
+        alert(`${data.username} logged in successfully!`);
         navigate("/blogs");
       }
     } catch (error) {

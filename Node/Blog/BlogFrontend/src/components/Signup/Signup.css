@@ -5,6 +5,8 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    
+    background-color: lightblue;
 }
 
 .container > form {
@@ -13,11 +15,11 @@
     margin: 50px;
     text-align: center;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-    background-color: lightblue;
     border-radius: 10px;
+    background-color: white;
 }
 
-input, select {
+input, select , textarea {
     width: 100%;
     padding: 15px;
     margin-top: 20px;

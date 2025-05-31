@@ -1,34 +1,69 @@
-import React, { useEffect, useState } from 'react';
-import { Link, Outlet, useLocation } from 'react-router-dom';
-import './Layout.css';
+import React, { useEffect, useState } from "react";
+import { Link, Outlet, useLocation } from "react-router-dom";
+import "./Layout.css";
 
 const Layout = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("accessToken"));
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !!localStorage.getItem("accessToken")
+  );
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     setIsLoggedIn(!!localStorage.getItem("accessToken"));
   }, [location]);
 
-  return (
-    <div className='layout'>
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/blogs">Blogs</Link>
-        <Link to="/createBlog">Create Blog</Link>
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-        {!isLoggedIn ? (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/signup">Signup</Link>
-          </>
-        ) : (
-          <>
-          <Link to="/myblogs">MyBlog</Link>
-          <Link to="/logout">Logout</Link>
-          </>
-        )}
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  return (
+    <div className="layout">
+      <nav className={scrolled ? "scrolled" : ""}>
+        <div className="menu-toggle" onClick={toggleMenu}>
+          &#9776;
+        </div>
+
+        <div className={`nav-links ${menuOpen ? "open" : ""}`}>
+          <Link to="/" onClick={() => setMenuOpen(false)}>
+            Home
+          </Link>
+          <Link to="/blogs" onClick={() => setMenuOpen(false)}>
+            Blogs
+          </Link>
+          <Link to="/createBlog" onClick={() => setMenuOpen(false)}>
+            Create Blog
+          </Link>
+
+          {!isLoggedIn ? (
+            <>
+              <Link to="/login" onClick={() => setMenuOpen(false)}>
+                Login
+              </Link>
+              <Link to="/signup" onClick={() => setMenuOpen(false)}>
+                Signup
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link to="/myblogs" onClick={() => setMenuOpen(false)}>
+                MyBlog
+              </Link>
+              <Link to="/logout" onClick={() => setMenuOpen(false)}>
+                Logout
+              </Link>
+            </>
+          )}
+        </div>
       </nav>
+
       <main>
         <Outlet />
       </main>

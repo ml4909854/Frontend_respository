@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Signup.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../Spinner/Spinner";
+import Spinner from "../../Spinner/Spinner";
 
 const Signup = () => {
   const [data, setData] = useState({
@@ -74,7 +74,7 @@ const Signup = () => {
 
         <input
           onChange={handleChange}
-          type="password"
+          type="text"
           value={data.password}
           name="password"
           placeholder="password"

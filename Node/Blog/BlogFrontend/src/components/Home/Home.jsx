@@ -1,9 +1,22 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import './Home.css';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./Home.css";
+import Spinner from "../../Spinner/Spinner";
 
 const Home = () => {
+  const [pageLoading, setPageLoading] = useState(true);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setPageLoading(false);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if(pageLoading){
+    return <Spinner/>
+  }
 
   return (
     <div className="home-image-wrapper">
@@ -16,7 +29,10 @@ const Home = () => {
         <h1 className="home-title">
           Hi! Bloggers, Welcome To <br /> Blog Official!
         </h1>
-        <button className="create-blog-button" onClick={() => navigate("/createBlog")}>
+        <button
+          className="create-blog-button"
+          onClick={() => navigate("/createBlog")}
+        >
           Create a Blog
         </button>
       </div>
