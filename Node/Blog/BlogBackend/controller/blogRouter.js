@@ -28,7 +28,7 @@ router.post(
       const { title, content } = req.body;
       const newBlog = new BlogModel({ title, content, author: req.user._id });
       const savedBlog = await newBlog.save();
-      res.status(200).json({ message: "Blog created successfully!", blog: savedBlog });
+      res.status(201).json({ message: "Blog created successfully!", blog: savedBlog });
     } catch (error) {
       res.status(500).json({ message: "Error creating blog!", error });
     }
