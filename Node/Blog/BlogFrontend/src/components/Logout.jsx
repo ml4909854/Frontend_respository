@@ -20,8 +20,8 @@ const Logout = () => {
 
         // Remove tokens and userId
         localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
-        localStorage.removeItem("userId");
+        // localStorage.removeItem("refreshToken");
+        // localStorage.removeItem("userId");
 
         alert("Logout successfully!");
         navigate("/login");

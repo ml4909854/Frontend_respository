@@ -8,7 +8,7 @@ const { default: mongoose } = require("mongoose");
 const isAuthenticate = require("../middleware/auth");
 const checkAccess = require("../middleware/checkAccess");
 const roles = require("../constants/roles");
-const blackList = require("../blackList.js")
+const blackList = require("../blackList.js");
 // Get all user only admin gets all user
 
 router.get("/", isAuthenticate, checkAccess(roles.admin), async (req, res) => {
@@ -43,7 +43,13 @@ router.get(
   }
 );
 
-// register
+
+function isStrongPassword(password) {
+  const regex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
+  return regex.test(password);
+}
+
 router.post("/register", async (req, res) => {
   try {
     const { username, password, role } = req.body;
@@ -52,57 +58,79 @@ router.post("/register", async (req, res) => {
     if (newUser) {
       return res
         .status(400)
-        .json({ message: "user Already exists! Try different username" });
+        .json({ message: "User already exists! Try different username." });
     }
+
+    if (!isStrongPassword(password)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters long, include one uppercase letter, one lowercase letter, one number, and one special character.",
+      });
+    }
+
     const saltRounds = Number(process.env.SALTROUNDS);
     const hashpassword = await bcrypt.hash(password, saltRounds);
 
-    newUser = await UserModel({ username, password: hashpassword, role });
+    newUser = new UserModel({ username, password: hashpassword, role });
     const savedUser = await newUser.save();
+
     res
       .status(201)
-      .json({ message: "user registered successfully!", user: savedUser });
+      .json({ message: "User registered successfully!", user: savedUser });
   } catch (error) {
-    res.status(500).json({ Error: error });
+    res.status(500).json({ error });
   }
 });
 
-//login
 
+//login
 router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    let user = await UserModel.findOne({ username });
+    // Input validation
+    if (!username || !password) {
+      return res.status(400).json({ message: "Username and password are required." });
+    }
+
+    const user = await UserModel.findOne({ username });
     if (!user) {
       return res
         .status(400)
-        .json({ message: "please register first! then login!" });
+        .json({ message: "Username and Password are Wrong || You are Not Registered User!" });
     }
 
-    // compare password
-    const comparepassword = await bcrypt.compare(password, user.password);
-    if (!comparepassword) {
-      res.status(401).json({ message: "Password is Incorrect" });
+    // Compare password
+    const isPasswordCorrect = await bcrypt.compare(password, user.password);
+    if (!isPasswordCorrect) {
+      return res.status(401).json({ message: "Password is incorrect." }); // ✅ added return
     }
+
     const accessToken = jwt.sign(
       { _id: user._id },
       process.env.ACCESS_SECRET_KEY,
-      { expiresIn: "30d" }
+      { expiresIn: "1d" }
     );
+
     const refreshToken = jwt.sign(
       { _id: user._id },
       process.env.REFRESH_SECRET_KEY,
       { expiresIn: "30d" }
     );
 
-    res
-      .status(200)
-      .json({ message: "Login successfull!", accessToken, refreshToken , userId:user._id });
+    res.status(200).json({
+      message: "Login successful!",
+      accessToken,
+      refreshToken,
+      userId: user._id,
+      username: user.username,
+      role: user.role, // optional if you want frontend to know
+    });
   } catch (error) {
-    res.status(500).json({ error: error });
+    res.status(500).json({ error: error.message }); // ✅ clearer error message
   }
 });
+
 
 // logout
 router.get("/logout", (req, res) => {
@@ -112,6 +140,5 @@ router.get("/logout", (req, res) => {
   }
   res.status(200).json({ message: "Logout successfully!" });
 });
-
 
 module.exports = router;

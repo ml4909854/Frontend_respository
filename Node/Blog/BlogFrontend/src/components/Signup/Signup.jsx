@@ -3,6 +3,8 @@ import "./Signup.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Spinner from "../../Spinner/Spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Signup = () => {
   const [data, setData] = useState({
@@ -11,49 +13,70 @@ const Signup = () => {
     role: "",
   });
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Form submit loader
-  const [pageLoading, setPageLoading] = useState(true); // Initial page loader
+  const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // Simulate loading effect when the page first loads
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setPageLoading(false); // Stop page loader after 2 seconds
-    }, 2000);
-
+    const timer = setTimeout(() => setPageLoading(false), 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
-  }
+  };
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
-    const backendUrl = import.meta.env.VITE_BACKEND_URL;
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
+  setError("");
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
-    try {
-      const response = await axios.post(`${backendUrl}/user/register`, data);
-
-      if (response.status === 201) {
-        alert("You registered successfully!");
-        navigate("/login");
-      }
-    } catch (err) {
-      setError("Registration failed! Try again later or use a different username.");
-      console.error("Registration Error:", err);
-    }
-
-    setData({ username: "", password: "", role: "" });
+  if (!data.username.trim()) {
+    setError("Username cannot be empty or just spaces.");
     setLoading(false);
+    return;
   }
 
-  if (pageLoading) {
-   return <Spinner/>
+  if (!/^[A-Z]/.test(data.username)) {
+    setError("Username must start with a capital letter.");
+    setLoading(false);
+    return;
   }
+
+  const passwordRegex =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?#&])[A-Za-z\d@$!%*?#&]{8,}$/;
+
+  if (!passwordRegex.test(data.password)) {
+    setError(
+      "Password must be at least 8 characters and include uppercase, lowercase, number, and special character."
+    );
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const response = await axios.post(`${backendUrl}/user/register`, data);
+    if (response.status === 201) {
+      alert("You registered successfully!");
+      setData({ username: "", password: "", role: "" });
+      navigate("/login");
+    }
+  } catch (err) {
+    const backendMessage = err?.response?.data?.message;
+    setError(backendMessage || "Registration failed! Try again later.");
+    console.error("Registration Error:", err);
+  }
+
+  setLoading(false);
+};
+
+  if (pageLoading) return <Spinner />;
 
   return (
     <div className="container">
@@ -72,17 +95,36 @@ const Signup = () => {
         />
         <br />
 
-        <input
-          onChange={handleChange}
-          type="text"
-          value={data.password}
-          name="password"
-          placeholder="password"
-          required
-          disabled={loading}
-        />
-        <br />
+        {/* Password field with FontAwesome eye toggle */}
+        <div className="password-wrapper" style={{ position: "relative" }}>
+          <input
+            onChange={handleChange}
+            type={showPassword ? "text" : "password"}
+            value={data.password}
+            name="password"
+            placeholder="password"
+            required
+            minLength={8}
+            disabled={loading}
+            style={{ paddingRight: "40px" }}
+          />
+          <span
+            className="eye-icon"
+            onClick={togglePasswordVisibility}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#333",
+            }}
+          >
+            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+          </span>
+        </div>
 
+        <br />
         <select
           onChange={handleChange}
           value={data.role}

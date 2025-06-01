@@ -8,8 +8,9 @@
   background-color: lightblue;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-h1{
-    text-align: center;
+
+h1 {
+  text-align: center;
 }
 
 .container > div {
@@ -17,7 +18,7 @@ h1{
   border-radius: 12px;
   width: 100%;
   height: auto;
-box-sizing: border-box;
+  box-sizing: border-box;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 24px;
   margin-bottom: 24px;
@@ -44,13 +45,46 @@ box-sizing: border-box;
   color: #7f8c8d;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+/* Tablet screens (up to 768px) */
+@media (max-width: 768px) {
+  .container {
+    max-width: 90%;
+    padding: 15px;
+  }
+
+  .container > div {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
   .container > div > h3 {
-    font-size: 20px;
+    font-size: 22px;
   }
 
   .container > div > p {
     font-size: 15px;
+  }
+}
+
+/* Mobile phones (up to 480px) */
+@media (max-width: 480px) {
+  .container {
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 10px;
+  }
+
+  .container > div {
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+
+  .container > div > h3 {
+    font-size: 18px;
+  }
+
+  .container > div > p {
+    font-size: 14px;
+    line-height: 1.4;
   }
 }

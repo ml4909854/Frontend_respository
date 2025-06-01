@@ -18,6 +18,20 @@ router.get("/", async (req, res) => {
   }
 });
 
+
+// get my blog 
+router.get("/myblogs" ,isAuthenticate , checkAccess(roles.author), async(req , res)=>{
+     try {
+      const userId = req.user.id
+      const myBlogs = await BlogModel.find({author:userId}).populate("author" , "username")
+      res.status(200).json({message:"myblogs" , myBlogs:myBlogs})
+      
+     } catch (error) {
+      res.status(500).json({ message: "Server Error", error });
+
+     }
+})
+
 // Create a blog (only authenticated authors can do this)
 router.post(
   "/create",

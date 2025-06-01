@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import "../Signup/Signup.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import Spinner from "../../Spinner/Spinner"; // ✅ import reusable spinner
+import Spinner from "../../Spinner/Spinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const [data, setData] = useState({
@@ -10,11 +12,11 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
-  const [pageLoading, setPageLoading] = useState(true); // For initial page load
-  const [formLoading, setFormLoading] = useState(false); // For form submission
+  const [pageLoading, setPageLoading] = useState(true);
+  const [formLoading, setFormLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // ✅ Page load spinner
   useEffect(() => {
     const timer = setTimeout(() => setPageLoading(false), 1000);
     return () => clearTimeout(timer);
@@ -29,31 +31,42 @@ const Login = () => {
     setData({ ...data, [name]: value });
   }
 
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
+
   async function handleSubmit(e) {
     e.preventDefault();
     setError("");
-    setFormLoading(true); // ✅ start form loading
+    setFormLoading(true);
 
     const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
     try {
       const response = await axios.post(`${backendUrl}/user/login`, data);
-             localStorage.setItem("accessToken" , response.data.accessToken)
-             localStorage.setItem("userId" , response.data.userId)
-             localStorage.setItem("refreshToken" , response.data.refreshToken)
+
       if (response.status === 200) {
+        const { accessToken, refreshToken, userId } = response.data;
+
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("userId", userId);
+
         alert(`${data.username} logged in successfully!`);
         navigate("/blogs");
       }
     } catch (error) {
-      setError("Login failed. Check your credentials or register first.");
+      setError(
+        error.response?.data?.message ||
+          "Login failed. Check your credentials or try again."
+      );
     }
 
     setData({
       username: "",
       password: "",
     });
-    setFormLoading(false); // ✅ stop form loading
+    setFormLoading(false);
   }
 
   return (
@@ -73,15 +86,35 @@ const Login = () => {
           required
           disabled={formLoading}
         />
-        <input
-          onChange={handleChange}
-          value={data.password}
-          name="password"
-          placeholder="password"
-          type="text"
-          required
-          disabled={formLoading}
-        />
+
+        {/* Password input with FontAwesome eye icon */}
+        <div className="password-wrapper" style={{ position: "relative" }}>
+          <input
+            onChange={handleChange}
+            value={data.password}
+            name="password"
+            placeholder="password"
+            type={showPassword ? "text" : "password"}
+            required
+            disabled={formLoading}
+            style={{ paddingRight: "40px" }}
+          />
+          <span
+            className="eye-icon"
+            onClick={togglePasswordVisibility}
+            style={{
+              position: "absolute",
+              right: "10px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              cursor: "pointer",
+              color: "#333",
+            }}
+          >
+            <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
+          </span>
+        </div>
+
         <button type="submit" disabled={formLoading}>
           {formLoading ? "Please wait..." : "Login"}
         </button>

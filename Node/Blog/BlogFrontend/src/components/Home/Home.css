@@ -70,6 +70,8 @@
 @media (max-width: 480px) {
   .home-title {
     font-size: 22px;
+    position: relative;
+    right: 20px;
   }
 
   .create-blog-button {
